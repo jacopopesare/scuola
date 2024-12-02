@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tabella_Anagrafica_Jacopo</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+
+	.scatola {
+            border: 5px outset black;
+            background-color: red;    
+            text-align: center;
+        }
+	</style>
+</head>
+<body>
+
+    <h1>Inserire i dati richiesti</h1>
+    
+    <form id="Modulo" class="scatola">
+        <br>
+        <label style="color:white" for="primoNome">Nome:</label>
+        <input type="text" id="primoNome" required><br><br>
+        
+        <label style="color:white" for="secondoNome">Cognome:</label>
+        <input type="text" id="secondoNome" name="secondoNome" required><br><br>
+        
+        <label style="color:white" for="residenza">Indirizzo:</label>
+        <input type="text" id="residenza" name="residenza" required><br><br>
+        
+        <label style="color:white" for="localita">Città:</label>
+        <input type="text" id="localita" name="localita" required><br><br>
+        
+        <button type="button" onclick="aggiungiRecord()">Aggiungi</button>
+        <br>
+    </form>
+
+    <h3>Tabella Dati Inseriti</h3>
+    <table id="tabellaRecord">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Cognome</th>
+                <th>Indirizzo</th>
+                <th>Città</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <script>
+        let elencoDati = [];
+
+        function aggiungiRecord() {
+            let primoNome = document.getElementById('primoNome').value;
+            let secondoNome = document.getElementById('secondoNome').value;
+            let residenza = document.getElementById('residenza').value;
+            let localita = document.getElementById('localita').value;
+
+            elencoDati.push([primoNome, secondoNome, residenza, localita]);
+
+            document.getElementById('Modulo').reset();
+
+            aggiornaTabella();
+        }
+
+        function aggiornaTabella() {
+            let tabella = document.getElementById('tabellaRecord').getElementsByTagName('tbody')[0];
+            tabella.innerHTML = "";
+            for (let i = 0; i < elencoDati.length; i++) {
+                let riga = tabella.insertRow();
+                for (let j = 0; j < elencoDati[i].length; j++) {
+                    let cella = riga.insertCell();
+                    cella.textContent = elencoDati[i][j];
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>
