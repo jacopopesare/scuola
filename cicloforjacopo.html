@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu dei Complementi</title>
+</head>
+<body>
+    <h1>Menu dei Complementi</h1>
+    <input type="number" id="valore" placeholder="Inserisci un numero intero">
+    <button onclick="generaComplementi()">Calcola</button>
+    <div id="risultati"></div>
+
+    <script>
+        function generaComplementi() {
+            const valore = parseInt(document.getElementById('valore').value);
+            const risultati = document.getElementById('risultati');
+            risultati.innerHTML = '<h2>Coppie Complementari:</h2><ul></ul>';
+            const ul = risultati.querySelector('ul');
+
+            for (let i = 0; i <= valore; i++) {
+                const elementoLista = document.createElement('li');
+                elementoLista.textContent = i + ' - ' + (valore - i);
+                ul.appendChild(elementoLista);
+            }
+        }
+    </script>
+</body>
+</html>
