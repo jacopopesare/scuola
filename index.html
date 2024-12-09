@@ -3,32 +3,54 @@
 <head>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
-      color: #333;
+      font-family: 'Arial', sans-serif;
+      background-color: #e6e6e6; /* Sfondo grigio chiaro */
+      color: #000; /* Testo nero */
       text-align: center;
       margin: 0;
       padding: 0;
     }
     h2 {
-      color: #4CAF50;
+      color: #000; /* Testo nero */
+      font-size: 36px;
       margin-top: 50px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 20px auto;
+      max-width: 600px;
+      padding: 20px;
+      background-color: #fff; /* Sfondo bianco per il contenitore */
+      border-radius: 10px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
     a {
       display: block;
-      font-size: 18px;
+      font-size: 20px;
+      font-weight: bold;
       color: #000; /* Testo nero */
       text-decoration: none;
-      padding: 10px;
+      padding: 15px;
       margin: 10px;
       border-radius: 5px;
-      background-color: #FF0000; /* Sfondo rosso */
+      background-color: #f44336; /* Sfondo rosso */
+      transition: all 0.3s ease;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
     a:hover {
-      background-color: #4CAF50; /* Sfondo verde al passaggio del mouse */
-      color: white; /* Testo bianco al passaggio del mouse */
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      background-color: #ff7043; /* Rosso più chiaro al passaggio del mouse */
+      color: #fff; /* Testo bianco al passaggio del mouse */
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      transform: scale(1.05); /* Leggero ingrandimento */
+    }
+    footer {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #666;
     }
   </style>
 </head>
@@ -36,10 +58,16 @@
 
 <h2>Lavori di Jacopo Pesare</h2>
 
-<a href="https://jacopopesare.github.io/scuola/cicloforjacopo.html">Lavoro sul ciclo for</a>
-<a href="https://jacopopesare.github.io/scuola/tabellanagraficajacopo">Tabella anagrafica</a>
-<a href="https://jacopopesare.github.io/scuola/modulodiregistrazionejacopo.html">Modulo di registrazione</a>
-<a href="https://jacopopesare.github.io/scuola/equazionequadraticajacopo.html">Equazione quadratica</a>
+<div class="container">
+  <a href="https://jacopopesare.github.io/scuola/cicloforjacopo.html">Lavoro sul ciclo for</a>
+  <a href="https://jacopopesare.github.io/scuola/tabellanagraficajacopo">Tabella anagrafica</a>
+  <a href="https://jacopopesare.github.io/scuola/modulodiregistrazionejacopo.html">Modulo di registrazione</a>
+  <a href="https://jacopopesare.github.io/scuola/equazionequadraticajacopo.html">Equazione quadratica</a>
+</div>
+
+<footer>
+  &copy; 2024 Jacopo Pesare - Tutti i diritti riservati.
+</footer>
 
 </body>
 </html>
