@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h1>Grafico a Stella di Jacopo</h1>
+
+<canvas id="stella" width="300" height="300" style="border:1px solid #000000;">
+  
+</canvas>
+
+<script>
+
+const canvas = document.getElementById("stella");
+const ctx = canvas.getContext("2d");
+
+
+ctx.beginPath();
+ctx.moveTo(150, 10); 
+ctx.lineTo(190, 110); 
+ctx.lineTo(290, 110); 
+ctx.lineTo(210, 180); 
+ctx.lineTo(250, 290); 
+ctx.lineTo(150, 220); 
+ctx.lineTo(50, 290);  
+ctx.lineTo(90, 180);  
+ctx.lineTo(10, 110);  
+ctx.lineTo(110, 110); 
+ctx.lineTo(150, 10);  
+ctx.closePath();
+ctx.stroke();
+</script>
+
+</body>
+</html>
