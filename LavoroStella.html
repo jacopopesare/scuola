@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: black;
+    color: white;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+
+  h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  }
+
+  canvas {
+    border: 5px solid white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    background: black;
+  }
+</style>
+</head>
+<body>
+<h1>Grafico a Stella di Jacopo</h1>
+
+<canvas id="stella" width="300" height="300">
+</canvas>
+
+<script>
+const canvas = document.getElementById("stella");
+const ctx = canvas.getContext("2d");
+
+// Sfondo nero della stella
+ctx.fillStyle = "black";
+ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+// Disegna la stella in giallo
+ctx.beginPath();
+ctx.moveTo(150, 10); // Punto in alto al centro
+ctx.lineTo(190, 110); // Punto in basso a destra
+ctx.lineTo(290, 110); // Punto esterno a destra
+ctx.lineTo(210, 180); // Punto interno in basso a destra
+ctx.lineTo(250, 290); // Punto esterno in basso
+ctx.lineTo(150, 220); // Punto interno in basso al centro
+ctx.lineTo(50, 290);  // Punto esterno in basso a sinistra
+ctx.lineTo(90, 180);  // Punto interno in basso a sinistra
+ctx.lineTo(10, 110);  // Punto esterno a sinistra
+ctx.lineTo(110, 110); // Punto interno in alto a sinistra
+ctx.lineTo(150, 10);  // Torna al punto iniziale
+ctx.closePath();
+
+ctx.fillStyle = "yellow";
+ctx.fill();
+ctx.strokeStyle = "yellow";
+ctx.stroke();
+</script>
+
+</body>
+</html>
