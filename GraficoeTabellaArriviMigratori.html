@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Grafico e Tabella Arrivi Migratori</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    /* Stile per il canvas */
+    canvas {
+      display: block;
+      margin: 20px auto;
+      border: 2px solid #333;
+    }
+    /* Stile per la tabella */
+    table {
+      width: 80%;
+      margin: 20px auto;
+      border-collapse: collapse;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+    th, td {
+      border: 1px solid #444;
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background-color: #6c7ae0;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+  <h2 style="text-align: center;">Grafico e Tabella Arrivi Migratori</h2>
+  <input type="file" id="fileUploader" accept=".csv" style="display: block; margin: 0 auto;">
+  <canvas id="graficoCanvas" width="800" height="500"></canvas>
+  <h3 style="text-align: center;">Dati Immigrazione</h3>
+  <table id="immigrazioneTable">
+    <thead>
+      <tr>
+        <th>Anno</th>
+        <th>Arrivi</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    let fileInput = document.getElementById("fileUploader");
+    let canvas = document.getElementById("graficoCanvas");
+    let ctx = canvas.getContext("2d");
+    let tabellaBody = document.querySelector("#immigrazioneTable tbody");
+
+    fileInput.addEventListener("change", function(event) {
+      let file = event.target.files[0];
+      if (file) {
+        let reader = new FileReader();
+        reader.onload = function(e) {
+          processaCSV(e.target.result);
+        };
+        reader.readAsText(file);
+      }
+    });
+
+    function processaCSV(text) {
+      let righe = text.split("\n").map(function(riga) {
+        return riga.replace(/"/g, '').trim();
+      }).slice(1);
+      let anni = [];
+      let arrivi = [];
+      tabellaBody.innerHTML = "";
+
+      for (let i = 0; i < righe.length; i++) {
+        let dati = righe[i].split(",");
+        if (dati.length === 2) {
+          let anno = dati[0].trim();
+          let numero = parseInt(dati[1].trim());
+          if (!isNaN(numero)) {
+            anni.push(anno);
+            arrivi.push(numero);
+            aggiungiRigaTabella(anno, numero);
+          }
+        }
+      }
+
+      if (anni.length > 0 && arrivi.length > 0) {
+        disegnaGrafico(anni, arrivi);
+      } else {
+        alert("Errore nel file CSV: dati non validi.");
+      }
+    }
+
+    function aggiungiRigaTabella(anno, arrivo) {
+      let riga = document.createElement("tr");
+      let cellaAnno = document.createElement("td");
+      let cellaArrivo = document.createElement("td");
+      cellaAnno.textContent = anno;
+      cellaArrivo.textContent = arrivo;
+      riga.appendChild(cellaAnno);
+      riga.appendChild(cellaArrivo);
+      tabellaBody.appendChild(riga);
+    }
+
+    function disegnaGrafico(anni, arrivi) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // Disegna gli assi
+      ctx.beginPath();
+      ctx.moveTo(50, 450);
+      ctx.lineTo(750, 450);
+      ctx.lineTo(750, 50);
+      ctx.stroke();
+
+      let maxArrivi = Math.max.apply(null, arrivi);
+
+      for (let i = 0; i < anni.length; i++) {
+        let x = 50 + (i * (700 / anni.length));
+        let y = 450 - (arrivi[i] / maxArrivi * 400);
+
+        // Disegna il punto
+        ctx.beginPath();
+        ctx.arc(x, y, 4, 0, Math.PI * 2);
+        ctx.fillStyle = "red";
+        ctx.fill();
+
+        // Collega i punti con una linea
+        if (i > 0) {
+          let prevX = 50 + ((i - 1) * (700 / anni.length));
+          let prevY = 450 - (arrivi[i - 1] / maxArrivi * 400);
+          ctx.beginPath();
+          ctx.moveTo(prevX, prevY);
+          ctx.lineTo(x, y);
+          ctx.strokeStyle = "blue";
+          ctx.stroke();
+        }
+        // Etichetta l'asse X
+        ctx.fillStyle = "black";
+        ctx.fillText(anni[i], x - 10, 470);
+      }
+    }
+  </script>
+</body>
+</html>
