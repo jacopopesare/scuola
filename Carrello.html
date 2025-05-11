@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrello</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #121212; /* Nero */
+      color: #f0f0f0; /* Testo chiaro */
+    }
+
+    .header {
+      background-color: #ff6600; /* Arancione */
+      color: black;
+      text-align: center;
+      padding: 20px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .home-link {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      color: #fff;
+      font-size: 16px;
+      text-decoration: none;
+      background-color: #333;
+      padding: 5px 12px;
+      border-radius: 5px;
+      transition: background-color 0.3s, box-shadow 0.3s;
+    }
+
+    .home-link:hover {
+      background-color: #ff6600;
+      box-shadow: 0 0 10px #ff6600;
+    }
+
+    .cart-container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 10px;
+      background: #1e1e1e;
+      border-radius: 5px;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #444;
+    }
+
+    .cart-item:last-child {
+      border-bottom: none;
+    }
+
+    .item-info h3 {
+      margin: 0 0 5px;
+      font-size: 18px;
+      color: #ffcc80;
+    }
+
+    .item-info p {
+      margin: 0;
+      color: #ccc;
+    }
+
+    .item-actions button {
+      background-color: #e53935;
+      color: white;
+      padding: 6px 12px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s, box-shadow 0.3s;
+    }
+
+    .item-actions button:hover {
+      background-color: #ff4444;
+      box-shadow: 0 0 10px #ff4444;
+    }
+
+    .total {
+      text-align: right;
+      font-size: 20px;
+      margin-top: 15px;
+      color: #ffa726;
+    }
+
+    .actions {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .actions button {
+      background-color: #ff6600;
+      color: white;
+      padding: 10px 20px;
+      margin: 0 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s, box-shadow 0.3s;
+    }
+
+    .actions button:hover {
+      background-color: #ff8533;
+      box-shadow: 0 0 10px #ff8533;
+    }
+
+    @media (max-width: 600px) {
+      .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .item-actions {
+        margin-top: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="home-link" onclick="window.location.href='HomE-commerce.html'">Home</a>
+  <div style="color: white;" class="header">Ecco il tuo carrello</div>
+  <div class="cart-container" id="cartContainer"></div>
+  <div class="total" id="totalPrice"></div>
+  <div class="actions">
+    <button id="confirmBtn" onclick="confirmPurchase()">Conferma l'acquisto</button>
+  </div>
+
+  <!-- Script JS identico al tuo, non modificato -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    const { jsPDF } = window.jspdf;
+    let carrello = JSON.parse(localStorage.getItem('carrello')) || [];
+    const userData = JSON.parse(localStorage.getItem('datiUtente')) || {};
+    const cartContainer = document.getElementById('cartContainer');
+
+    function parsePrezzo(val) {
+      let cleaned = String(val).replace(/[^0-9,\.]/g, '');
+      cleaned = cleaned.replace(/,/g, '.');
+      const num = parseFloat(cleaned);
+      return isNaN(num) ? 0 : num;
+    }
+
+    function renderCart() {
+      cartContainer.innerHTML = '';
+      let total = 0;
+      for (let i = 0; i < carrello.length; i++) {
+        const item = carrello[i];
+        const prezzoNum = parsePrezzo(item.prezzo);
+        total += prezzoNum;
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML =
+          '<div class="item-info">' +
+            '<h3>' + item.nome + '</h3>' +
+            '<p>Prezzo: ' + item.prezzo + '</p>' +
+          '</div>' +
+          '<div class="item-actions">' +
+            '<button onclick="removeItem(' + i + ')">Rimuovi</button>' +
+          '</div>';
+        cartContainer.appendChild(div);
+      }
+      document.getElementById('totalPrice').innerText = 'Totale: ' + total.toFixed(2).replace('.', ',') + ' €';
+    }
+
+    function removeItem(index) {
+      carrello.splice(index, 1);
+      localStorage.setItem('carrello', JSON.stringify(carrello));
+      renderCart();
+    }
+
+    function confirmPurchase() {
+      if (carrello.length === 0) {
+        alert('Il carrello è vuoto. Nessun acquisto da confermare.');
+        return;
+      }
+      const now = new Date();
+      const data = now.toLocaleDateString('it-IT');
+      const ora = now.toLocaleTimeString('it-IT');
+      const doc = new jsPDF();
+      let totalPDF = 0;
+      let y = 20;
+      doc.setFontSize(12);
+      doc.text('Scontrino Fiscale', 105, y, { align: 'center' }); y += 10;
+      doc.text('Cliente: ' + userData.nome + ' ' + userData.cognome, 10, y); y += 6;
+      doc.text('Mail: ' + userData.email, 10, y); y += 6;
+      doc.text('Età: ' + userData.eta, 10, y); y += 6;
+      doc.text('Indirizzo: ' + userData.indirizzo, 10, y); y += 10;
+      doc.text('Data: ' + data + ' Ora: ' + ora, 10, y); y += 10;
+      doc.text('Articoli acquistati:', 10, y); y += 8;
+      for (let j = 0; j < carrello.length; j++) {
+        const it = carrello[j];
+        const prezzo = parsePrezzo(it.prezzo);
+        totalPDF += prezzo;
+        doc.text('- ' + it.nome + ': ' + it.prezzo, 10, y); y += 6;
+        if (y > 280) { doc.addPage(); y = 20; }
+      }
+      y += 6; if (y > 280) { doc.addPage(); y = 20; }
+      doc.line(10, y, 200, y); y += 8;
+      doc.text('Totale: ' + totalPDF.toFixed(2).replace('.', ',') + ' €', 10, y);
+      doc.save('scontrino.pdf');
+      alert('✅ Acquisto completato!');
+      localStorage.removeItem('carrello');
+      carrello = [];
+      renderCart();
+      document.getElementById('totalPrice').innerText = '✅ Acquisto avvenuto';
+    }
+
+    window.addEventListener('storage', function(e) {
+      if (e.key === 'carrello') {
+        carrello = JSON.parse(localStorage.getItem('carrello')) || [];
+        renderCart();
+      }
+    });
+
+    renderCart();
+  </script>
+</body>
+</html>
