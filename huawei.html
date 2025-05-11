@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>huawei</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f0f0f0;
+    }
+    .cart-link {      
+      position: absolute;   
+      top: 10px;   
+      left: 10px;      
+      color: white;     
+      font-size: 16px;      
+      text-decoration: none;    
+      background-color: rgba(0,0,0,0.3);       
+      padding: 5px 10px;       
+      border-radius: 4px;    
+    }  
+    .header {
+      background-color: #90ee90;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .phones-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 30px;
+      padding: 30px;
+    }
+
+    .phone {
+      text-align: center;
+      cursor: pointer;
+      width: 200px;
+    }
+
+    .phone img {
+      width: 150px;
+      height: auto;
+    }
+
+    .phone div {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <a href="Carrello.html" class="cart-link">Carrello</a> 
+  <div class="header">
+   Huawei
+  </div>
+
+  <div class="phones-container" id="phonesContainer">
+  </div>
+
+  <script>
+    let telefoni = JSON.parse(localStorage.getItem('telefoni'));
+    let phonesContainer = document.getElementById('phonesContainer');
+    let huaweiPhones = telefoni.filter(function(t) { return t.marca === 'Huawei'; });
+
+    huaweiPhones.forEach(function(phone) {
+      let phoneElement = document.createElement('div');
+      phoneElement.classList.add('phone');
+      phoneElement.setAttribute('onclick', 'vaiAllaPaginaTelefono("' + phone.nome + '")');
+
+      let phoneImg = document.createElement('img');
+      phoneImg.src = phone.imgUrl;
+      phoneImg.alt = phone.nome;
+
+      let phoneNome = document.createElement('div');
+      phoneNome.innerText = phone.nome;
+
+      phoneElement.appendChild(phoneImg);
+      phoneElement.appendChild(phoneNome);
+      phonesContainer.appendChild(phoneElement);
+    });
+
+    function vaiAllaPaginaTelefono(nomeTelefono) {
+      let telefono = telefoni.find(function(t) { return t.nome === nomeTelefono; });
+      if (telefono) {
+        localStorage.setItem('telefono', JSON.stringify(telefono));
+        window.location.href = 'Dettagli.html';  
+      }
+    }
+  </script>
+</body>
+</html>
