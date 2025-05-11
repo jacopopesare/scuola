@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Samsung</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #000;
+      color: #fff;
+    }
+
+    .cart-link {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      color: white;
+      font-size: 16px;
+      text-decoration: none;
+      background-color: rgba(255, 102, 0, 0.8);
+      padding: 6px 12px;
+      border-radius: 4px;
+      z-index: 1000;
+    }
+
+    .header {
+      background-color: #ff6600;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .phones-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 30px;
+      padding: 30px;
+    }
+
+    .phone {
+      text-align: center;
+      cursor: pointer;
+      width: 200px;
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+    }
+
+    .phone:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 10px #ff6600;
+    }
+
+    .phone img {
+      width: 150px;
+      height: 150px;
+      object-fit: contain;
+      background-color: white;
+      border-radius: 10px;
+    }
+
+    .phone div {
+      margin-top: 10px;
+      font-weight: bold;
+      color: #ffcc99;
+    }
+
+    @media (max-width: 600px) {
+      .header {
+        font-size: 20px;
+        padding: 15px;
+      }
+
+      .cart-link {
+        font-size: 14px;
+        padding: 4px 8px;
+      }
+
+      .phone {
+        width: 150px;
+      }
+
+      .phone img {
+        width: 120px;
+        height: 120px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="Carrello.html" class="cart-link">Carrello</a>
+  <div class="header">
+    Samsung
+  </div>
+
+  <div class="phones-container" id="phonesContainer"></div>
+
+  <script>
+    let telefoni = JSON.parse(localStorage.getItem('telefoni')) || [];
+    let phonesContainer = document.getElementById('phonesContainer');
+    let samsungPhones = telefoni.filter(t => t.marca === 'Samsung');
+
+    samsungPhones.forEach(function(phone) {
+      let phoneElement = document.createElement('div');
+      phoneElement.classList.add('phone');
+      phoneElement.setAttribute('onclick', 'vaiAllaPaginaTelefono("' + phone.nome + '")');
+
+      let phoneImg = document.createElement('img');
+      phoneImg.src = phone.imgUrl;
+      phoneImg.alt = phone.nome;
+      phoneImg.onerror = function() {
+        this.src = 'images/placeholder.png';
+      };
+
+      let phoneNome = document.createElement('div');
+      phoneNome.innerText = phone.nome;
+
+      phoneElement.appendChild(phoneImg);
+      phoneElement.appendChild(phoneNome);
+      phonesContainer.appendChild(phoneElement);
+    });
+
+    function vaiAllaPaginaTelefono(nomeTelefono) {
+      let telefono = telefoni.find(t => t.nome === nomeTelefono);
+      if (telefono) {
+        localStorage.setItem('telefono', JSON.stringify(telefono));
+        window.location.href = 'Dettagli.html';
+      }
+    }
+  </script>
+</body>
+</html>
