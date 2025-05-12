@@ -3,111 +3,283 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registrazione Collezionabili</title>
+  <title>Registrazione</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
-    * { box-sizing: border-box; }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Inter', sans-serif;
       margin: 0;
       padding: 2rem 1rem;
-      background-color: #212121;
+      background-color: #212121; /* Nero per il background */
       display: flex;
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
-      color: white;
     }
-    h1 { font-size: 1.8rem; margin-bottom: 0.2rem; color: #FFA500; }
-    h3 { font-size: 1.1rem; color: #FFA500; margin-bottom: 1.5rem; }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 0.2rem;
+      color: #FFA500; /* Arancione per il titolo */
+    }
+
+    h3 {
+      font-size: 1.1rem;
+      color: #FFA500;
+      margin-bottom: 1.5rem;
+    }
+
     form {
-      background-color: #333333;
+      background-color: #333333; /* Scuro per il form */
       padding: 2rem;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-      width: 100%; max-width: 420px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      width: 100%;
+      max-width: 420px;
     }
-    label { display: block; margin-bottom: 0.4rem; font-size: 0.95rem; color: #FFA500; font-weight: 600; }
-    input[type="text"], input[type="email"], input[type="number"] {
-      width: 100%; padding: 0.75rem; margin-bottom: 1rem;
-      border: 1px solid #d1d5db; border-radius: 8px;
-      font-size: 1rem; background-color: #4b4b4b; color: white;
+
+    label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-size: 0.95rem;
+      color: #FFA500; /* Arancione per i label */
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="number"] {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 1rem;
+      background-color: #4b4b4b; /* Grigio scuro per il campo input */
+      color: white;
       transition: border-color 0.2s ease;
     }
-    input:focus { border-color: #FFA500; outline: none; }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="number"]:focus {
+      border-color: #FFA500; /* Arancione per focus */
+      outline: none;
+    }
+
     input[type="submit"] {
-      background-color: #FFA500; color: white; border: none;
-      padding: 0.75rem; border-radius: 8px; cursor: pointer;
-      font-size: 1rem; font-weight: 600;
+      background-color: #FFA500; /* Arancione per il bottone */
+      color: white;
+      border: none;
+      padding: 0.75rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
       transition: background-color 0.2s ease;
     }
-    input[type="submit"]:hover { background-color: #e67e00; }
-    .products-list {
-      margin-top: 2rem;
-      width: 100%; max-width: 800px;
-      background: #333;
-      border-radius: 8px;
-      padding: 1rem;
+
+    input[type="submit"]:hover {
+      background-color: #e67e00; /* Arancione più scuro al hover */
     }
-    .products-list h4 { margin-top: 0; color: #FFA500; }
-    .product-item { padding: 0.5rem 0; border-bottom: 1px solid #444; }
-    .product-item:last-child { border-bottom: none; }
-    .product-item span { display: block; color: #fff; }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 1rem;
+      }
+
+      form {
+        padding: 1.5rem;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      h3 {
+        font-size: 1rem;
+      }
+    }
   </style>
+
 </head>
 <body>
   <h1>ActionVerse</h1>
-  <h3>Registrati per accedere ai collezionabili</h3>
+  <h3>Registrati</h3>
+
   <form id="formRegistrazione">
-    <label for="nome">Nome</label>
+    <label>Nome</label>
     <input type="text" name="nome" id="nome" required>
-    <label for="cognome">Cognome</label>
+
+    <label>Cognome</label>
     <input type="text" name="cognome" id="cognome" required>
-    <label for="email">E-mail</label>
+
+    <label>E-mail</label>
     <input type="email" name="email" id="email" required>
-    <label for="indirizzo">Indirizzo</label>
+
+    <label>Indirizzo</label>
     <input type="text" name="indirizzo" id="indirizzo" required>
-    <label for="eta">Età</label>
+
+    <label>Età</label>
     <input type="number" name="eta" id="eta" required>
+
     <input type="submit" value="Registrati">
   </form>
 
-  <div class="products-list" id="productsList">
-    <h4>Prodotti disponibili:</h4>
-    <!-- Lista popolata via JS -->
-  </div>
-
   <script>
-    // Definizione prodotti collezionabili
-    const prodotti = [
-      { categoria: "LEGO", nome: "LEGO Star Wars Millennium Falcon", prezzo: "€159,99", dettagli: "Set 75192, 7541 pezzi, età 16+", imgUrl: "" },
-      { categoria: "Funko Pop", nome: "Funko Pop! Spider-Man", prezzo: "€12,99", dettagli: "Figura in vinile, altezza 9 cm", imgUrl: "" },
-      { categoria: "Action Figure", nome: "Hot Toys Iron Man Mark LXXXV", prezzo: "€399,99", dettagli: "1/6 scale, 30 cm", imgUrl: "" },
-      { categoria: "Statuette", nome: "Kotobukiya Batman Statue", prezzo: "€129,99", dettagli: "PVC 1/7 scale, altezza 30 cm", imgUrl: "" }
+    const telefoni = [
+      {
+        "marca": "Samsung",
+        "nome": "Samsung Galaxy S25 Ultra",
+        "ram": "12 GB",
+        "memoria": "512 GB",
+        "fotocamera": "200 MP principale, 12 MP ultra-grandangolare, 10 MP teleobiettivo, 10 MP periscopico",
+        "frequenza": "120 Hz",
+        "prezzo": "€1619",
+        "imgUrl": "https://img.tuttoandroid.net/wp-content/uploads/2025/01/Samsung-Galaxy-S25-Ultra-tag.png"
+      },
+      {
+        "marca": "Samsung",
+        "nome": "Samsung Galaxy S25+",
+        "ram": "12 GB",
+        "memoria": "512 GB",
+        "fotocamera": "50 MP principale, 12 MP ultra-grandangolare, 10 MP teleobiettivo",
+        "frequenza": "120 Hz",
+        "prezzo": "€1299",
+        "imgUrl": "https://static.comet.it/b2c/public/e-cat/SAM08063E/SAM08063E-2c146d3309-0.jpg"
+      },
+      {
+        "marca": "Samsung",
+        "nome": "Samsung Galaxy S25",
+        "ram": "8 GB",
+        "memoria": "256 GB",
+        "fotocamera": "50 MP principale, 12 MP ultra-grandangolare, 10 MP teleobiettivo",
+        "frequenza": "120 Hz",
+        "prezzo": "€999",
+        "imgUrl": "https://media.ldlc.com/r374/ld/products/00/06/20/57/LD0006205731.jpg"
+      },
+      {
+        "marca": "Samsung",
+        "nome": "Samsung Galaxy Z Fold 5",
+        "ram": "12 GB",
+        "memoria": "512 GB",
+        "fotocamera": "50 MP principale, 12 MP ultra-grandangolare, 10 MP teleobiettivo",
+        "frequenza": "120 Hz",
+        "prezzo": "€1799",
+        "imgUrl": "https://www.smartworld.it/images/2023/07/21/samsung-galaxy-z-fold-5-scheda-tecnica-orig.png"
+      },
+      {
+        "marca": "Apple",
+        "nome": "iPhone 15 Pro Max",
+        "ram": "8 GB",
+        "memoria": "512 GB",
+        "fotocamera": "48 MP principale, 12 MP ultra-grandangolare, 12 MP teleobiettivo",
+        "frequenza": "120 Hz",
+        "prezzo": "€1689",
+        "imgUrl": "https://www.joojea.com/29984-large_default/iphone-16-pro-max-256gb-nero-titanio.jpg"
+      },
+      {
+        "marca": "Apple",
+        "nome": "iPhone 15 Pro",
+        "ram": "8 GB",
+        "memoria": "512 GB",
+        "fotocamera": "48 MP principale, 12 MP ultra-grandangolare, 12 MP teleobiettivo",
+        "frequenza": "120 Hz",
+        "prezzo": "€1589",
+        "imgUrl": "https://files.refurbed.com/ii/iphone-15-pro-1694588677.jpg"
+      },
+      {
+        "marca": "Apple",
+        "nome": "iPhone 15 Plus",
+        "ram": "6 GB",
+        "memoria": "512 GB",
+        "fotocamera": "48 MP principale, 12 MP ultra-grandangolare",
+        "frequenza": "120 Hz",
+        "prezzo": "€1349",
+        "imgUrl": "https://files.refurbed.com/ii/iphone-15-plus-1694600365.jpg"
+      },
+      {
+        "marca": "Apple",
+        "nome": "iPhone 15",
+        "ram": "6 GB",
+        "memoria": "512 GB",
+        "fotocamera": "48 MP principale, 12 MP ultra-grandangolare",
+        "frequenza": "120 Hz",
+        "prezzo": "€1249",
+        "imgUrl": "https://cf6.certideal.com/32932-prod_large/iphone-15-128-gb-verde.jpg"
+      },
+      {
+        "marca": "Xiaomi",
+        "nome": "Xiaomi 15 Ultra",
+        "ram": "16 GB",
+        "memoria": "512 GB",
+        "fotocamera": "50 MP quadrupla Leica (principale, ultra-grandangolare, teleobiettivo, periscopico)",
+        "frequenza": "120 Hz",
+        "prezzo": "€1199",
+        "imgUrl": "https://www.multibrandproject.it/pimages/Xiaomi-15-Ultra-512Gb-16Gb-RAM-5G-Dual-Sim-White-EU-extra-big-19111-071.jpg"
+      },
+      {
+        "marca": "Xiaomi",
+        "nome": "Xiaomi 15 Pro",
+        "ram": "12 GB",
+        "memoria": "512 GB",
+        "fotocamera": "50 MP tripla Leica",
+        "frequenza": "120 Hz",
+        "prezzo": "€999",
+        "imgUrl": "https://img.tuttoandroid.net/wp-content/uploads/2024/10/Xiaomi-15-Pro-Verde-460x460.png"
+      },
+      {
+        "marca": "Xiaomi",
+        "nome": "Xiaomi 15",
+        "ram": "12 GB",
+        "memoria": "512 GB",
+        "fotocamera": "50 MP tripla",
+        "frequenza": "120 Hz",
+        "prezzo": "€899",
+        "imgUrl": "https://cdn.beebom.com/mobile/xiaomi-15-front-and-back-1-356w.webp"
+      },
+      {
+        "marca": "Xiaomi",
+        "nome": "Xiaomi 14 Ultra",
+        "ram": "12 GB",
+        "memoria": "512 GB",
+        "fotocamera": "50 MP quadrupla Leica",
+        "frequenza": "120 Hz",
+        "prezzo": "€1099",
+        "imgUrl": "https://m.media-amazon.com/images/I/51XJHAjKJmL._AC_SL1001_.jpg"
+      },
+      {
+        "marca": "Huawei",
+        "nome": "Huawei Mate 70 RS Ultimate Design",
+        "ram": "16 GB",
+        "memoria": "512 GB",
+        "fotocamera": "50 MP tripla Leica",
+        "frequenza": "120 Hz",
+        "prezzo": "€1599",
+        "imgUrl": "https://it.etoren.com/upload/images/0.60267800_1732846246_huawei-mate-70-rs-ultimate-5g-plu-al10-dual-sim-512gb-black-16gb-ram-china-version.jpg"
+      }
     ];
-    // Salva in localStorage
-    localStorage.setItem('prodotti', JSON.stringify(prodotti));
 
-    // Mostra elenco sulla pagina registrazione
-    const listContainer = document.getElementById('productsList');
-    prodotti.forEach(p => {
-      const div = document.createElement('div');
-      div.className = 'product-item';
-      div.innerHTML = `<strong>${p.nome}</strong> <span>Categoria: ${p.categoria}</span><span>Prezzo: ${p.prezzo}</span><span>${p.dettagli}</span>`;
-      listContainer.appendChild(div);
-    });
-
-    // Gestione submit
-    document.getElementById('formRegistrazione').addEventListener('submit', function(e) {
+    document.getElementById("formRegistrazione").addEventListener("submit", function(e) {
       e.preventDefault();
-      const nome = document.getElementById('nome').value;
-      const cognome = document.getElementById('cognome').value;
-      const email = document.getElementById('email').value;
-      const indirizzo = document.getElementById('indirizzo').value;
-      const eta = document.getElementById('eta').value;
+
+      const nome = document.getElementById("nome").value;
+      const cognome = document.getElementById("cognome").value;
+      const email = document.getElementById("email").value;
+      const indirizzo = document.getElementById("indirizzo").value;
+      const eta = document.getElementById("eta").value;
+
       const datiUtente = { nome, cognome, email, indirizzo, eta };
-      localStorage.setItem('datiUtente', JSON.stringify(datiUtente));
-      window.location.href = 'HomE-commerce.html';
+
+      localStorage.setItem("datiUtente", JSON.stringify(datiUtente));
+      localStorage.setItem("telefoni", JSON.stringify(telefoni));
+
+      window.location.href = "HomE-commerce.html";
     });
   </script>
 </body>
