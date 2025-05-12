@@ -1,6 +1,6 @@
 <!DOCTYPE html> 
 <html>
-  <head>   
+<head>   
   <meta charset="UTF-8">   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">   
   <title>Dettagli</title>   
@@ -8,22 +8,31 @@
     body {       
       font-family: Arial, sans-serif;
       margin: 0;     
-      background-color: #f0f0f0;    
+      background-color: #121212; /* sfondo nero */
+      color: white;    
       position: relative;   
     }    
+
     .cart-link {      
       position: absolute;   
       top: 10px;   
-      left: 10px;      
+      right: 10px;      
       color: white;     
       font-size: 16px;      
       text-decoration: none;    
-      background-color: rgba(0,0,0,0.3);       
-      padding: 5px 10px;       
-      border-radius: 4px;    
+      background-color: #333;       
+      padding: 5px 12px;       
+      border-radius: 4px;
+      transition: background-color 0.3s, box-shadow 0.3s;
     }  
+
+    .cart-link:hover {
+      background-color: #ff6600;
+      box-shadow: 0 0 10px #ff6600;
+    }
+
     .header {       
-      background-color: #90ee90;     
+      background-color: #ff6600;     
       color: white;      
       text-align: center;       
       padding: 20px;      
@@ -31,6 +40,7 @@
       font-weight: bold;  
       margin-top: 0;  
     }
+
     .product-container {
       display: flex;
       justify-content: space-between;    
@@ -38,84 +48,108 @@
       max-width: 1200px;    
       margin: 0 auto;    
     }   
+
     .product-info { 
       width: 45%;  
     }     
+
     .product-img {  
       width: 45%;    
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }     
+
     .product-img img {  
       width: 234px;     
       height: 234px;    
-      object-fit: cover;   
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ff6600;
     }    
+
     .product-info h2 {  
-      font-size: 24px;    
+      font-size: 26px;
+      color: #ff6600;
     }    
+
     .product-info p {  
       font-size: 18px;    
       margin: 10px 0;    
     }     
+
     .button-container {   
       margin-top: 20px;    
     }
+
     button { 
-      background-color: #28a745; 
+      background-color: #ff6600; 
       color: white;  
       border: none;  
       padding: 10px 15px; 
       border-radius: 5px;  
       cursor: pointer;  
       font-size: 16px;   
-      margin-right: 10px; 
+      margin-right: 10px;
+      transition: background-color 0.3s, box-shadow 0.3s;
     } 
+
     button:hover { 
-      background-color: #218838;   
+      background-color: #e65c00;
+      box-shadow: 0 0 10px #ff6600;   
     }    
+
     .return-button {   
-      background-color: #007bff; 
+      background-color: #333; 
     }    
+
     .return-button:hover { 
-      background-color: #0056b3;  
+      background-color: #ff6600;
+      box-shadow: 0 0 10px #ff6600;  
     }  
   </style>
 </head>
-  <body>
-    <a href="Carrello.html" class="cart-link">Carrello</a> 
-      <div class="header">Dettagli Telefono</div>   
-    <div class="product-container">     
-      <div class="product-info">    
-        <h2 id="phoneName"></h2>   
-        <p><strong>Marca:</strong> <span id="phoneBrand"></span></p>     
-        <p><strong>Prezzo:</strong> <span id="phonePrice"></span></p>    
-        <p><strong>Dettagli:</strong> <span id="phoneDetails"></span></p>     
-        <div class="button-container">   
-          <button id="addToCartBtn">Aggiungi al carrello</button>  
-          <button class="return-button" onclick="location.href='HomE-commerce.html'">Ritorna alla Home</button>   
-        </div>   
-      </div> 
-      <div class="product-img">   
-        <img id="phoneImage" src="" alt="Immagine del telefono">  
-      </div>  
+<body>
+  <a href="Carrello.html" class="cart-link">Carrello</a> 
+
+  <div class="header">Dettagli Telefono</div>   
+
+  <div class="product-container">     
+    <div class="product-info">    
+      <h2 id="phoneName"></h2>   
+      <p><strong>Marca:</strong> <span id="phoneBrand"></span></p>     
+      <p><strong>Prezzo:</strong> <span id="phonePrice"></span></p>    
+      <p><strong>Dettagli:</strong> <span id="phoneDetails"></span></p>     
+      <div class="button-container">   
+        <button id="addToCartBtn">Aggiungi al carrello</button>  
+        <button class="return-button" onclick="location.href='HomE-commerce.html'">Ritorna alla Home</button>   
+      </div>   
+    </div> 
+
+    <div class="product-img">   
+      <img id="phoneImage" src="" alt="Immagine del telefono">  
     </div>  
-    <script>   
-      let telefono = JSON.parse(localStorage.getItem('telefono'));  
-      if (telefono) {      
-        document.getElementById('phoneName').innerText = telefono.nome;  
-        document.getElementById('phoneBrand').innerText = telefono.marca;   
-        document.getElementById('phonePrice').innerText = telefono.prezzo;    
-        document.getElementById('phoneDetails').innerText = 'RAM: ' + telefono.ram + ', Memoria: ' + telefono.memoria + ', Fotocamera: ' + telefono.fotocamera + ', Frequenza: ' + telefono.frequenza; 
-        document.getElementById('phoneImage').src = telefono.imgUrl;  
-      }  
-          document.getElementById('addToCartBtn').onclick = function() {
-       let carrello = JSON.parse(localStorage.getItem('carrello')) || [];
-       carrello.push(telefono);
-       localStorage.setItem('carrello', JSON.stringify(carrello));
-       let total = parseFloat(localStorage.getItem('totalCarrello')) || 0;
-       total += parseFloat(telefono.prezzo);
-       localStorage.setItem('totalCarrello', total);
-       alert('Prodotto aggiunto al carrello!');
-      };  
-    </script> 
-  </body> 
+  </div>  
+
+  <script>   
+    let telefono = JSON.parse(localStorage.getItem('telefono'));  
+    if (telefono) {      
+      document.getElementById('phoneName').innerText = telefono.nome;  
+      document.getElementById('phoneBrand').innerText = telefono.marca;   
+      document.getElementById('phonePrice').innerText = telefono.prezzo + " €";    
+      document.getElementById('phoneDetails').innerText = 'RAM: ' + telefono.ram + ', Memoria: ' + telefono.memoria + ', Fotocamera: ' + telefono.fotocamera + ', Frequenza: ' + telefono.frequenza; 
+      document.getElementById('phoneImage').src = telefono.imgUrl;  
+    }  
+
+    document.getElementById('addToCartBtn').onclick = function() {
+      let carrello = JSON.parse(localStorage.getItem('carrello')) || [];
+      carrello.push(telefono);
+      localStorage.setItem('carrello', JSON.stringify(carrello));
+      let total = parseFloat(localStorage.getItem('totalCarrello')) || 0;
+      total += parseFloat(telefono.prezzo);
+      localStorage.setItem('totalCarrello', total);
+      alert('Prodotto aggiunto al carrello!');
+    };  
+  </script> 
+</body> 
 </html>
