@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Caricamento JSON tramite XMLHttpRequest</title>
+
+    <style>
+        table {
+            width: 80%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 6px;
+        }
+        th {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Carica un file JSON</h2>
+
+<input type="file" id="fileInput" accept=".json">
+<br><br>
+
+<div id="message"></div>
+<table id="tabella"></table>
+
+<script>
+
+document.getElementById("fileInput").addEventListener("change", function() {
+
+    const file = this.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+
+        
+        const contenuto = e.target.result;
+
+       
+        const blob = new Blob([contenuto], { type: "application/json" });
+
+        
+        const url = URL.createObjectURL(blob);
+
+        
+        const req = new XMLHttpRequest();
+        req.open("GET", url, true);
+        req.send();
+
+        req.onload = function() {
+
+            
+            const json = JSON.parse(req.responseText);
+
+            
+            document.getElementById('message').innerHTML =
+                "<pre>" + JSON.stringify(json, null, 2) + "</pre>";
+
+            
+            generaTabella(json);
+        };
+    };
+
+    reader.readAsText(file);
+});
+
+
+function generaTabella(dati) {
+    const tabella = document.getElementById("tabella");
+    tabella.innerHTML = "";
+
+    if (dati.length === 0) return;
+
+    
+    const header = Object.keys(dati[0]);
+    let html = "<tr>";
+    header.forEach(key => html += `<th>${key.toUpperCase()}</th>`);
+    html += "</tr>";
+
+   
+    dati.forEach(r => {
+        html += "<tr>";
+        header.forEach(key => html += `<td>${r[key]}</td>`);
+        html += "</tr>";
+    });
+
+    tabella.innerHTML = html;
+}
+
+</script>
+</body>
+</html>
