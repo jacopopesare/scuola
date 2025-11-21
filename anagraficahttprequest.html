@@ -13,6 +13,12 @@
 
 <h2>Gestione Anagrafica Classe 5B</h2>
 
+<label>Carica file JSON:</label>
+<input type="file" id="fileJson" accept=".json">
+<button onclick="caricaDaFile()">Carica</button>
+
+<br><br>
+
 <label>Filtra cognomi per iniziale:</label>
 <input type="text" id="iniziale" maxlength="1">
 <button onclick="filtraPerIniziale()">Cerca</button>
@@ -47,21 +53,28 @@
 <script>
 let utenti = [];
 
-function caricaJSON() {
-    let xhr = new XMLHttpRequest();
-    xhr.open("GET", "utenti.json", true);
+function caricaDaFile() {
+    let fileInput = document.getElementById("fileJson");
+    let file = fileInput.files[0];
 
-    xhr.onload = function () {
-        if (xhr.status === 200) {
-            utenti = JSON.parse(xhr.responseText);
+    if (!file) {
+        alert("Seleziona un file JSON!");
+        return;
+    }
+
+    let reader = new FileReader();
+
+    reader.onload = function(e) {
+        try {
+            utenti = JSON.parse(e.target.result);
             stampaTabella(utenti);
+        } catch (err) {
+            alert("Errore: il file non è un JSON valido");
         }
     };
 
-    xhr.send();
+    reader.readAsText(file);
 }
-
-caricaJSON();
 
 function stampaTabella(lista) {
     let tbody = document.querySelector("#tabella tbody");
@@ -131,3 +144,4 @@ function calcolaGenerazione() {
 
 </body>
 </html>
+
