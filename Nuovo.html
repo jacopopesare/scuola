@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestione Anagrafica 5B</title>
+    <style>
+        table { border-collapse: collapse; width: 60%; margin-top: 20px; }
+        th, td { border: 1px solid black; padding: 8px; text-align: center; }
+        th { background-color: #ddd; }
+    </style>
+</head>
+<body>
+
+<h2>Gestione Anagrafica Classe 5B</h2>
+
+<label>Filtra cognomi per iniziale:</label>
+<input type="text" id="iniziale" maxlength="1">
+<button onclick="filtraPerIniziale()">Cerca</button>
+
+<br><br>
+
+<button onclick="mostraMaggiorenni()">Mostra maggiorenni</button>
+
+<br><br>
+
+<label>Inserisci data di nascita:</label>
+<input type="date" id="inputData">
+<button onclick="calcolaGenerazione()">Calcola generazione</button>
+
+<p id="risultatoGenerazione"></p>
+
+<hr>
+
+<h3>Tabella Anagrafica</h3>
+
+<table id="tabella">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Cognome</th>
+            <th>Data di nascita</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<script>
+let utenti = [];
+
+function caricaJSON() {
+    let xhr = new XMLHttpRequest();
+    xhr.open("GET", "utenti.json", true);
+
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            utenti = JSON.parse(xhr.responseText);
+            stampaTabella(utenti);
+        }
+    };
+
+    xhr.send();
+}
+
+caricaJSON();
+
+function stampaTabella(lista) {
+    let tbody = document.querySelector("#tabella tbody");
+    tbody.innerHTML = "";
+
+    lista.forEach(u => {
+        let tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${u.nome}</td>
+            <td>${u.cognome}</td>
+            <td>${u.nascita}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function filtraPerIniziale() {
+    let lettera = document.getElementById("iniziale").value.toUpperCase();
+
+    let risultati = utenti.filter(u =>
+        u.cognome.toUpperCase().startsWith(lettera)
+    );
+
+    stampaTabella(risultati);
+}
+
+function calcolaEta(dataNascita) {
+    let oggi = new Date();
+    let nascita = new Date(dataNascita);
+
+    let eta = oggi.getFullYear() - nascita.getFullYear();
+    let m = oggi.getMonth() - nascita.getMonth();
+
+    if (m < 0 || (m === 0 && oggi.getDate() < nascita.getDate())) {
+        eta--;
+    }
+    return eta;
+}
+
+function mostraMaggiorenni() {
+    let maggiorenni = utenti.filter(u => calcolaEta(u.nascita) >= 18);
+    stampaTabella(maggiorenni);
+}
+
+function calcolaGenerazione() {
+    let data = document.getElementById("inputData").value;
+    if (!data) {
+        document.getElementById("risultatoGenerazione").innerHTML = "Inserisci una data valida";
+        return;
+    }
+
+    let anno = parseInt(data.substring(0, 4));
+    let gen = "";
+
+    if (anno >= 2013) gen = "Generazione Alpha";
+    else if (anno >= 1997) gen = "Generazione Z";
+    else if (anno >= 1981) gen = "Millennials";
+    else if (anno >= 1965) gen = "Generazione X";
+    else if (anno >= 1946) gen = "Baby Boomers";
+    else if (anno >= 1928) gen = "Generazione Silenziosa";
+    else if (anno >= 1901) gen = "Greatest Generation";
+    else gen = "Prima del 1900 ";
+
+    document.getElementById("risultatoGenerazione").innerHTML = "La generazione è: " + gen;
+}
+</script>
+
+</body>
+</html>
